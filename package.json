@@ -1,0 +1,18 @@
+{
+  "name": "base-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "docker:dev": "docker-compose -f docker/docker-compose.dev.yml up --watch",
+    "docker:prod": "docker-compose -f docker/docker-compose.prod.yml up --build -d",
+    "docker:down": "docker-compose -f docker/docker-compose.dev.yml down"
+  }
+}

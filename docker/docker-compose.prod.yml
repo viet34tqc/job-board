@@ -1,0 +1,49 @@
+services:
+  mongo:
+    image: mongo:8
+    ports:
+      - 27017:27017
+    env_file:
+      - ../.env
+    volumes:
+      - mongo_data:/data/db
+
+  # postgres:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_DB: base
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: ../
+      dockerfile: docker/prod/Dockerfile.server
+    image: base-server-prod:latest
+    env_file:
+      - ../.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+      #- postgres
+
+  client:
+    build:
+      context: ..
+      dockerfile: docker/prod/Dockerfile.client
+    image: base-client-prod:latest
+    env_file:
+      - ../.env
+    ports:
+      - 80:80
+    depends_on:
+      - server
+
+volumes:
+  mongo_data:
+  #pg_data:

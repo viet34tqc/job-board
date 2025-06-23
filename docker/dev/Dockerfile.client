@@ -1,0 +1,10 @@
+FROM node:20-alpine
+RUN corepack enable
+
+WORKDIR /app
+# We are copying the package.json from root folder
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY packages/client ./packages/client
+COPY packages/shared ./packages/shared
+
+WORKDIR /app/packages/client

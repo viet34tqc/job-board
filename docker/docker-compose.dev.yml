@@ -1,0 +1,74 @@
+services:
+  mongo:
+    image: mongo:8
+    ports:
+      - 27017:27017
+    env_file:
+      - ../.env
+    volumes:
+      - mongo_data:/data/db
+
+  # postgres:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_DB: base
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: ../
+      dockerfile: docker/dev/Dockerfile.server
+    image: base-server-dev:latest
+    env_file:
+      - ../.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+      #- postgres
+    command: sh -c "pnpm install --frozen-lockfile --ignore-scripts && npx prisma generate && npx prisma db push && pnpm start:dev"
+    develop:
+      watch:
+        - action: sync
+          path: ../packages/server
+          target: /app/packages/server
+          ignore:
+          - node_modules
+        - action: sync
+          path: ../packages/shared
+          target: /app/packages/server/node_modules/@base/shared
+        - action: rebuild
+          path: ../pnpm-lock.yaml
+  client:
+    build:
+      context: ../
+      dockerfile: docker/dev/Dockerfile.client
+    image: base-client-dev:latest
+    env_file:
+      - ../.env
+    ports:
+      - 5173:5173
+    depends_on:
+      - server
+    command: sh -c "pnpm install --frozen-lockfile --ignore-scripts && pnpm dev"
+    develop:
+      watch:
+        - action: sync
+          path: ../packages/client
+          target: /app/packages/client
+          ignore:
+          - node_modules
+        - action: rebuild
+          path: ../pnpm-lock.yaml
+        - action: sync
+          path: ../packages/shared
+          target: /app/packages/client/node_modules/@base/shared
+
+volumes:
+  mongo_data:
+  #pg_data:
