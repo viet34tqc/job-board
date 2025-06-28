@@ -3,7 +3,9 @@ RUN corepack enable
 
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY packages/server ./packages/server
+COPY packages/server/package.json ./packages/server/
 COPY packages/shared ./packages/shared
+RUN pnpm install
 
+COPY packages/server ./packages/server
 WORKDIR /app/packages/server

@@ -31,7 +31,7 @@ services:
     depends_on:
       - mongo
       #- postgres
-    command: sh -c "pnpm install --frozen-lockfile --ignore-scripts && npx prisma generate && npx prisma db push && pnpm start:dev"
+    command: sh -c "npx prisma generate && npx prisma db push && pnpm start:dev"
     develop:
       watch:
         - action: sync
@@ -55,7 +55,7 @@ services:
       - 5173:5173
     depends_on:
       - server
-    command: sh -c "pnpm install --frozen-lockfile --ignore-scripts && pnpm dev"
+    command: sh -c "pnpm dev"
     develop:
       watch:
         - action: sync
