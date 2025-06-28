@@ -38,7 +38,7 @@ services:
           path: ../packages/server
           target: /app/packages/server
           ignore:
-          - node_modules
+            - node_modules
         - action: sync
           path: ../packages/shared
           target: /app/packages/server/node_modules/@base/shared
@@ -62,7 +62,7 @@ services:
           path: ../packages/client
           target: /app/packages/client
           ignore:
-          - node_modules
+            - node_modules
         - action: rebuild
           path: ../pnpm-lock.yaml
         - action: sync
