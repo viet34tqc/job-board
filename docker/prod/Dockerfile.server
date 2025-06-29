@@ -11,8 +11,6 @@ COPY packages/shared ./packages/shared
 RUN pnpm install --frozen-lockfile --ignore-scripts
 
 WORKDIR /app/packages/server
-COPY packages/server/prisma ./prisma
-RUN npx prisma generate
 RUN pnpm build
 
 # Production stage
@@ -29,8 +27,6 @@ RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 WORKDIR /app/packages/server
 
 COPY --from=builder /app/packages/server/dist ./dist
-# Copy Prisma schema for runtime use
-COPY packages/server/prisma ./prisma
 
 COPY packages/server/entrypoint.sh .
 RUN chmod +x ./entrypoint.sh
