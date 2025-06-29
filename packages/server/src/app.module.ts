@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/configuration';
 import { validate } from './config/env.validation';
-import { PrismaService } from './prisma.service';
+import { Example, ExampleSchema } from './schemas/example.schema';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,8 +17,17 @@ import { PrismaService } from './prisma.service';
       load: [configuration],
       ignoreEnvFile: true, // Only load from container environment variables
     }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('DATABASE_URL'),
+      }),
+      inject: [ConfigService],
+    }),
+    MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService],
 })
 export class AppModule {}

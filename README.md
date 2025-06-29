@@ -41,7 +41,7 @@ A job board project fullstack built with NestJS, React, and MongoDB, containeriz
 
 ## Development
 
-### Using Docker (Recommended)
+### Using Docker
 
 ```bash
 pnpm docker:dev
@@ -53,21 +53,11 @@ This will start:
 - Backend server: `http://localhost:3000`
 - MongoDB: `27017`
 
-### Running Services Individually
+### Update database schema
 
-1. **Frontend (Client)**
-
-   ```bash
-   cd packages/client
-   pnpm dev  # Start Vite dev server
-   ```
-
-2. **Backend (Server)**
-
-   ```bash
-   cd packages/server
-   pnpm start:dev  # Start NestJS in watch mode
-   ```
+- Copy .env into `packages/server/.env`
+- Change the mongo from `mongo` to `localhost` in DATABASE_URL: "mongodb://root:admin123@localhost:27017/mydb?authSource=admin"
+- Run `cd packages/server && npx prisma db push`
 
 ## Project Structure
 
@@ -88,20 +78,4 @@ This will start:
 │   │   └── prisma/          # Database schema and migrations
 │   └── shared/               # Shared types and interfaces
 └── README.md                 # This file
-```
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and update the following variables:
-
-```env
-# Server
-PORT=3000
-NODE_ENV=development
-
-# Database
-DATABASE_URL=mongodb://mongo:27017/jobboard
-
-# Frontend
-VITE_API_URL=http://localhost:3000
 ```

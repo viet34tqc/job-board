@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Example } from './schemas/example.schema';
+
 @Injectable()
 export class AppService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @InjectModel(Example.name) private exampleModel: Model<Example>,
+  ) {}
 
   getHello(): string {
     return 'Hello World!';
   }
 
   async getAllExamples() {
-    return this.prisma.example.findMany();
+    return this.exampleModel.find().exec();
   }
 }
