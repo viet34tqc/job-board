@@ -9,10 +9,10 @@ export class User extends Document {
   email: string;
 
   @Prop()
-  name?: string;
+  name: string;
 
   @Prop()
-  password?: string;
+  password: string;
 
   @Prop()
   address?: string;
