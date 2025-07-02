@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as argon2 from 'argon2';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './schemas/user.schema';
@@ -24,12 +24,16 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<User> {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw new NotFoundException(`Invalid ID ${id}`);
     const user = await this.userModel.findById(id).exec();
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
     return user;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw new NotFoundException(`Invalid ID ${id}`);
     const user = await this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .exec();
@@ -38,6 +42,8 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<User> {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw new NotFoundException(`Invalid ID ${id}`);
     const user = await this.userModel.findByIdAndDelete(id).exec();
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
     return user;
