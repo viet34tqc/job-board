@@ -8,17 +8,6 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  # postgres:
-  #   image: postgres:15
-  #   environment:
-  #     POSTGRES_DB: base
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: password
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - pg_data:/var/lib/postgresql/data
-
   server:
     build:
       context: ../
@@ -28,10 +17,10 @@ services:
       - ../.env
     ports:
       - 3000:3000
+      - 9229:9229 # Add debug port
     depends_on:
       - mongo
-      #- postgres
-    command: sh -c "pnpm start:dev"
+    command: sh -c "pnpm start:debug"
     develop:
       watch:
         - action: sync
@@ -53,6 +42,7 @@ services:
       - ../.env
     ports:
       - 5173:5173
+      - 9222:9222 # Add debug port for React
     depends_on:
       - server
     command: sh -c "pnpm dev"
