@@ -12,10 +12,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
   // Enable CORS
   app.enableCors({
-    origin: configService.get<string>('FRONTEND_URL')!,
+    origin: configService.get<string>('frontendUrl')!,
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(configService.get<number>('BACKEND_PORT')!);
+  await app.listen(configService.get<number>('backendPort')!);
 }
 void bootstrap();

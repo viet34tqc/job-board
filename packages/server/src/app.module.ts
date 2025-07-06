@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 import { validate } from './config/env.validation';
 import { Example, ExampleSchema } from './schemas/example.schema';
@@ -15,17 +16,17 @@ import { UsersModule } from './users/users.module';
       skipProcessEnv: true,
       validate,
       load: [configuration],
-      ignoreEnvFile: true, // Only load from container environment variables
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('DATABASE_URL'),
+        uri: configService.get<string>('databaseUrl'),
       }),
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
