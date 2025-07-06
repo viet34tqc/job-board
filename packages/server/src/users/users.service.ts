@@ -31,6 +31,13 @@ export class UsersService {
     return user;
   }
 
+  async findOneByEmail(email: string): Promise<User> {
+    const user = await this.userModel.findOne({ email }).exec();
+    if (!user)
+      throw new NotFoundException(`User with email ${email} not found`);
+    return user;
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);

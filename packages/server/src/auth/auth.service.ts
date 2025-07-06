@@ -17,8 +17,7 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDTO) {
-    // Find user by email
-    const user = await this.usersService.findOne(loginDto.email);
+    const user = await this.usersService.findOneByEmail(loginDto.email);
 
     // Compare passwords
     const passwordMatches = await verify(user.password, loginDto.password);
