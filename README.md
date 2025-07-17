@@ -1,14 +1,67 @@
 # Job Board
 
-A job board project fullstack built with NestJS, React, and MongoDB, containerized with Docker for easy development and deployment.
+A platform for job posting and recruitment with role-based access control.
 
 ## Features
 
-- **Backend**: NestJS with TypeScript
-- **Frontend**: React with Vite
-- **Database**: MongoDB (with PostgreSQL configuration available)
-- **Development**: Hot-reloading for both frontend and backend
-- **Monorepo**: Managed with pnpm workspaces
+- **Job Posting**
+  Employers can post job listings, with permissions managed via role-based access control.
+
+- **Job Search by Skills**
+  Candidates can search for jobs based on specific skill tags.
+
+- **Scheduled Email Notifications**
+  Weekly job recommendation emails are sent to subscribers based on their chosen skills.
+
+## Entities
+
+Who uses the system:
+
+- **User**: Represents a user with properties such as email, password, role, and subscription status.
+- **Company**: Represents a company with properties such as name, description, and logo.
+- **Admin**: Represents an admin with properties such as email, password, role, and subscription status.
+
+Other entities:
+
+- **Job**: Represents a job listing with properties such as title, description, company, and skills.
+- **Subscription**: Represents a subscription with properties such as user, skill, and start date.
+- **CV**: Represents a CV with properties such as user, job, and file.
+- **Skills**: Represents a skill such as "React", "Node.js", "Python", etc.
+
+## Relationships
+
+- **Candidate** has many **CVs**.
+- **CV** belongs to one **Candidate**.
+- **Company** has many **Jobs**.
+- **Job** belongs to one **Company**.
+- **Job** has many **Skills**.
+- **Skill** belongs to many **Job**.
+
+## User Roles and Functionalities
+
+### 1. **Candidate**
+
+- Register and log in (jwt authentication).
+- Search for jobs by skills.
+- View job postings.
+- Submit CVs to job postings.
+- Subscribe to specific skills to receive weekly job updates via email.
+
+### 2. **Employer**
+
+- Register and log in.
+- Post new job postings.
+- Manage job postings.
+- Add company profile and introduction.
+
+### 3. **Admin**
+
+- Review and approve submitted CVs before they are forwarded to employers.
+- Manage users, job postings, and system settings.
+
+## Skill-Based Subscription System
+
+Candidates can subscribe to one or more skills. The system will automatically send them a weekly email containing job postings that match their subscribed skills.
 
 ## Prerequisites
 
@@ -41,8 +94,6 @@ A job board project fullstack built with NestJS, React, and MongoDB, containeriz
 
 ## Development
 
-### Using Docker
-
 ```bash
 pnpm docker:dev
 ```
@@ -52,30 +103,3 @@ This will start:
 - Frontend dev server: `http://localhost:5173`
 - Backend server: `http://localhost:3000`
 - MongoDB: `27017`
-
-### Update database schema
-
-- Copy .env into `packages/server/.env`
-- Change the mongo from `mongo` to `localhost` in DATABASE_URL: "mongodb://root:admin123@localhost:27017/mydb?authSource=admin"
-- Run `cd packages/server && npx prisma db push`
-
-## Project Structure
-
-```text
-.
-├── docker/                    # Docker configuration files
-│   ├── docker-compose.dev.yml  # Development environment
-│   └── docker-compose.prod.yml # Production environment
-├── packages/
-│   ├── client/               # React frontend
-│   │   ├── src/              # Source files
-│   │   ├── index.html        # Main HTML template
-│   │   └── vite.config.ts    # Vite configuration
-│   ├── server/               # NestJS backend
-│   │   ├── src/
-│   │   │   ├── app/        # Application code
-│   │   │   └── main.ts      # Application entry point
-│   │   └── prisma/          # Database schema and migrations
-│   └── shared/               # Shared types and interfaces
-└── README.md                 # This file
-```
