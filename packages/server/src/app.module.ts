@@ -2,16 +2,17 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
+import { CompaniesModule } from './companies/companies.module';
 import configuration from './config/configuration';
 import { validate } from './config/env.validation';
 import { Example, ExampleSchema } from './schemas/example.schema';
 import { UsersModule } from './users/users.module';
-import { Connection } from 'mongoose';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { Connection } from 'mongoose';
     MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
     UsersModule,
     AuthModule,
+    CompaniesModule,
   ],
   controllers: [AppController],
   providers: [

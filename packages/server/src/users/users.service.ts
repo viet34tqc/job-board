@@ -18,8 +18,7 @@ export class UsersService {
     if (createUserDto.password) {
       createUserDto.password = await argon2.hash(createUserDto.password);
     }
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    return this.userModel.create(createUserDto);
   }
 
   async findAll(): Promise<User[]> {
