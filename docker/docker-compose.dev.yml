@@ -16,7 +16,7 @@ services:
     env_file:
       - ../.env
     ports:
-      - 3000:3000
+      - 3001:3001
       - 9229:9229 # Add debug port
     depends_on:
       - mongo
