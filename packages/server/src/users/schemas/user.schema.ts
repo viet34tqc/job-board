@@ -21,6 +21,9 @@ export class User extends Document {
   address?: string;
 
   @Prop()
+  role: string;
+
+  @Prop()
   createdAt: Date;
 
   @Prop()

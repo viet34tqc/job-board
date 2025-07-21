@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
+import { AuthPayload } from './auth.type';
 import { LoginDTO } from './dto/login.dto';
 
 @Injectable()
@@ -19,6 +20,8 @@ export class AuthService {
   async login(loginDto: LoginDTO) {
     const user = await this.usersService.findOneByEmail(loginDto.email);
 
+    if (!user) throw new ForbiddenException('Invalid credentials');
+
     // Compare passwords
     const passwordMatches = await verify(user.password, loginDto.password);
 
@@ -27,9 +30,11 @@ export class AuthService {
       throw new ForbiddenException('Invalid credentials');
     }
 
-    const payload = {
+    const payload: AuthPayload = {
       sub: user._id as string,
       email: user.email,
+      name: user.name,
+      role: user.role,
     };
 
     // Generate JWT token
@@ -38,6 +43,7 @@ export class AuthService {
     // Return user and token
     return {
       accessToken: token,
+      ...payload,
     };
   }
 }
