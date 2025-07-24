@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
-import { AuthPayload } from './auth.type';
+import { AuthJwtPayload } from './auth.type';
 import { LoginDTO } from './dto/login.dto';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class AuthService {
       throw new ForbiddenException('Invalid credentials');
     }
 
-    const payload: AuthPayload = {
+    const payload: AuthJwtPayload = {
       sub: user._id as string,
       email: user.email,
       name: user.name,

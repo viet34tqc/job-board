@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { User } from 'src/users/schemas/user.schema';
 
-export type AuthPayload = {
+export type AuthJwtPayload = {
   email: string;
   sub: string;
   name: string;
