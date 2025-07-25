@@ -43,9 +43,9 @@ export class UsersService {
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
-    const user = await this.userModel
-      .findByIdAndUpdate(id, updateUserDto, { new: true })
-      .exec();
+    const user = await this.userModel.findByIdAndUpdate(id, updateUserDto, {
+      new: true,
+    });
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
     return user;
   }
