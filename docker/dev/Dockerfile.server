@@ -2,10 +2,14 @@ FROM node:20-alpine
 RUN corepack enable
 
 WORKDIR /app
+
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/server/package.json ./packages/server/
 COPY packages/shared ./packages/shared
-RUN pnpm install
 
-COPY packages/server ./packages/server
+RUN pnpm install --frozen-lockfile
+
 WORKDIR /app/packages/server
+
+# Expose the port
+EXPOSE 3001 9229
