@@ -50,12 +50,12 @@ export class UsersService {
     return user;
   }
 
-  async remove(id: string): Promise<User> {
+  async remove(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const user = await this.userModel.findById(id).exec();
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
     await this.userModel.softDelete({ _id: id });
-    return this.userModel.findById(id).exec() as Promise<User>;
+    return { message: 'User deleted successfully' };
   }
 }

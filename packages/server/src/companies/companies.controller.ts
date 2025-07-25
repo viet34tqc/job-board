@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { User } from 'src/users/schemas/user.schema';
 import { CompaniesService } from './companies.service';
@@ -25,5 +25,10 @@ export class CompaniesController {
     @UserDecorator() user: User,
   ) {
     return this.companiesService.update(id, updateCompanyDto, user);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.companiesService.delete(id);
   }
 }

@@ -40,4 +40,13 @@ export class CompaniesService {
       throw new NotFoundException(`Company with ID ${id} not found`);
     return updatedCompany;
   }
+
+  async delete(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw new NotFoundException(`Invalid ID ${id}`);
+    const company = await this.companyModel.findById(id).exec();
+    if (!company) throw new NotFoundException('Company not found');
+    await this.companyModel.softDelete({ _id: id });
+    return { message: 'Company deleted successfully' };
+  }
 }
