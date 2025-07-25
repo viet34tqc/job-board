@@ -41,12 +41,20 @@ export class CompaniesService {
     return updatedCompany;
   }
 
-  async delete(id: string) {
+  async delete(id: string, user: User) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const company = await this.companyModel.findById(id).exec();
     if (!company) throw new NotFoundException('Company not found');
-    await this.companyModel.softDelete({ _id: id });
+    const deletedCompany = await this.companyModel.softDelete({ _id: id });
+    if (deletedCompany.deleted !== 0) {
+      await this.companyModel.findByIdAndUpdate(id, {
+        deletedBy: {
+          _id: user._id,
+          email: user.email,
+        },
+      });
+    }
     return { message: 'Company deleted successfully' };
   }
 }

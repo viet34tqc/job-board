@@ -28,7 +28,7 @@ export class CompaniesController {
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.companiesService.delete(id);
+  delete(@Param('id') id: string, @UserDecorator() user: User) {
+    return this.companiesService.delete(id, user);
   }
 }
