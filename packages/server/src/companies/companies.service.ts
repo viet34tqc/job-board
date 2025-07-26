@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import aqp from 'api-query-params';
 import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { User } from 'src/users/schemas/user.schema';
@@ -56,5 +57,40 @@ export class CompaniesService {
       });
     }
     return { message: 'Company deleted successfully' };
+  }
+
+  async findAll({
+    currentPage,
+    limit,
+    qs,
+  }: {
+    currentPage: number;
+    limit: number;
+    qs: string;
+  }) {
+    const { filter, population } = aqp(qs);
+    delete filter.page;
+    delete filter.limit;
+    const defaultLimit = limit ?? 10;
+    const skip = (currentPage - 1) * defaultLimit;
+    const totalItems = await this.companyModel.find(filter).countDocuments();
+    const totalPages = Math.ceil(totalItems / defaultLimit);
+
+    const results = await this.companyModel
+      .find(filter)
+      .skip(skip)
+      .limit(defaultLimit)
+      .populate(population)
+      .exec();
+
+    return {
+      meta: {
+        pageSize: defaultLimit,
+        currentPage: currentPage,
+        totalPages,
+        totalItems,
+      },
+      results,
+    };
   }
 }
