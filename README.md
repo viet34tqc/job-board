@@ -103,3 +103,16 @@ This will start:
 - Frontend dev server: `http://localhost:5173`
 - Backend server: `http://localhost:3000`
 - MongoDB: `27017`
+
+## Codebase and Feature documentation
+
+### Transform data using `transformData.decorator.ts`
+
+The response from the server will be in the following format:
+
+```json
+{
+  "statusCode": 200,
+  "data": T
+}
+```
