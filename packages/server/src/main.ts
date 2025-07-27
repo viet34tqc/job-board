@@ -1,8 +1,8 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { TransformDataInterceptor } from './core/transformData.decorator';
+import { TransformDataInterceptor } from './interceptors/transformData.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,7 +17,7 @@ async function bootstrap() {
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalInterceptors(new TransformDataInterceptor());
+  app.useGlobalInterceptors(new TransformDataInterceptor(app.get(Reflector)));
   await app.listen(configService.get<number>('backendPort')!);
 }
 void bootstrap();

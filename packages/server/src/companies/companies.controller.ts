@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
+import { ResponseMessage } from 'src/interceptors/transformData.interceptor';
 import { User } from 'src/users/schemas/user.schema';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -37,6 +38,7 @@ export class CompaniesController {
   }
 
   @Get()
+  @ResponseMessage('Get all companies successfully')
   findAll(
     @Query('page') currentPage: number,
     @Query('limit') limit: number,
