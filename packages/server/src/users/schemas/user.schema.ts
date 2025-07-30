@@ -1,5 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+
+export enum UserRole {
+  USER = 'user',
+  ADMIN = 'admin',
+}
 
 // @Schema decorator with timestamps: true automatically adds and manages
 // createdAt and updatedAt fields in the document
@@ -11,17 +16,30 @@ export class User extends Document {
   @Prop()
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   password: string;
 
-  @Prop()
-  phone?: string;
+  @Prop({ type: Object })
+  company?: {
+    _id: mongoose.Schema.Types.ObjectId;
+    name: string;
+  };
 
   @Prop()
   address?: string;
 
   @Prop()
-  role: string;
+  age?: number;
+
+  @Prop()
+  gender?: string;
+
+  @Prop()
+  role: UserRole;
+
+  // For simplicity
+  @Prop()
+  refreshToken: string;
 
   @Prop()
   createdAt: Date;
@@ -34,6 +52,24 @@ export class User extends Document {
 
   @Prop()
   isDeleted: boolean;
+
+  @Prop({ type: Object })
+  createdBy: {
+    _id: mongoose.Schema.Types.ObjectId;
+    email: string;
+  };
+
+  @Prop({ type: Object })
+  updatedBy: {
+    _id: mongoose.Schema.Types.ObjectId;
+    email: string;
+  };
+
+  @Prop({ type: Object })
+  deletedBy: {
+    _id: mongoose.Schema.Types.ObjectId;
+    email: string;
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

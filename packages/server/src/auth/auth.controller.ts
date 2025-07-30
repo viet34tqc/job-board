@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Request as Req } from '@nestjs/common';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { RegisterUserDto } from 'src/users/dto/register-user.dto';
 import { AuthService } from './auth.service';
 import { RequestWithUser } from './auth.type';
 import { IsPublic } from './decoratots/auth.decorator';
@@ -11,8 +11,8 @@ export class AuthController {
 
   @IsPublic()
   @Post('signup')
-  async signup(@Body() createUserDto: CreateUserDto) {
-    return await this.authService.signup(createUserDto);
+  async signup(@Body() registerUserDto: RegisterUserDto) {
+    return this.authService.signup(registerUserDto);
   }
 
   @IsPublic()

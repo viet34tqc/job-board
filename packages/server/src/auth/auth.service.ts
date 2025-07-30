@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { RegisterUserDto } from 'src/users/dto/register-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthJwtPayload } from './auth.type';
 import { LoginDTO } from './dto/login.dto';
@@ -13,8 +13,8 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  async signup(createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async signup(registerUserDto: RegisterUserDto) {
+    return this.usersService.register(registerUserDto);
   }
 
   async login(loginDto: LoginDTO) {
