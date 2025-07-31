@@ -109,6 +109,14 @@ export class UsersService {
     return updatedUser;
   }
 
+  updateUserToken(id: string, refreshToken: string) {
+    return this.userModel.findByIdAndUpdate(
+      id,
+      { refreshToken },
+      { new: true },
+    );
+  }
+
   async remove(id: string, user: User) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);

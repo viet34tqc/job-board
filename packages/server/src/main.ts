@@ -1,9 +1,9 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { TransformDataInterceptor } from './interceptors/transformData.interceptor';
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -26,6 +26,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.use(cookieParser());
   app.useGlobalInterceptors(new TransformDataInterceptor(app.get(Reflector)));
   await app.listen(configService.get<number>('backendPort')!);
 }

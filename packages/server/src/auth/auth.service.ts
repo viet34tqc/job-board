@@ -1,7 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Res } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
+import { Response } from 'express';
+import { parseDuration } from 'src/libs/utils';
 import { RegisterUserDto } from 'src/users/dto/register-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthJwtPayload } from './auth.type';
@@ -19,7 +21,10 @@ export class AuthService {
     return this.usersService.register(registerUserDto);
   }
 
-  async login(loginDto: LoginDTO) {
+  async login(
+    loginDto: LoginDTO,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     const user = await this.usersService.findOneByEmail(loginDto.email);
 
     if (!user) throw new ForbiddenException('Invalid credentials');
@@ -48,10 +53,20 @@ export class AuthService {
       }),
     ]);
 
+    // Update user's refreshToken
+    await this.usersService.updateUserToken(user._id as string, refreshToken);
+
+    response.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      maxAge: parseDuration(
+        this.configService.get<string>('jwtRefreshExpiresIn')!,
+      ),
+    });
+
     // Return user and token
     return {
       accessToken,
-      refreshToken,
       user: payload,
     };
   }
