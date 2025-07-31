@@ -1,4 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
 import { RegisterUserDto } from 'src/users/dto/register-user.dto';
@@ -11,6 +12,7 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private usersService: UsersService,
+    private configService: ConfigService,
   ) {}
 
   async signup(registerUserDto: RegisterUserDto) {
@@ -37,13 +39,20 @@ export class AuthService {
       role: user.role,
     };
 
-    // Generate JWT token
-    const token = await this.jwtService.signAsync(payload);
+    // Generate JWT tokens
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload),
+      this.jwtService.signAsync(payload, {
+        secret: this.configService.get<string>('jwtRefreshSecret')!,
+        expiresIn: this.configService.get<string>('jwtRefreshExpiresIn')!,
+      }),
+    ]);
 
     // Return user and token
     return {
-      accessToken: token,
-      ...payload,
+      accessToken,
+      refreshToken,
+      user: payload,
     };
   }
 }

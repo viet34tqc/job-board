@@ -6,5 +6,9 @@ export default () => ({
   databaseUrl:
     process.env.DATABASE_URL ??
     'mongodb://root:admin123@localhost:27017/mydb?authSource=admin',
-  jwtSecret: process.env.JWT_SECRET ?? 'your-jwt-secret-key-here',
+  jwtAccessSecret: process.env.JWT_ACCESS_SECRET ?? 'your-jwt-secret-key-here',
+  jwtRefreshSecret:
+    process.env.JWT_REFRESH_SECRET ?? 'your-jwt-secret-key-here',
+  jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN ?? '1h',
+  jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN ?? '10d',
 });

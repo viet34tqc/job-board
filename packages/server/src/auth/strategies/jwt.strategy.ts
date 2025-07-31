@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // Passport automatically verifies the token (e.g., signature and expiration) using the secretOrKey and other configurations provided in the super call of the strategy.
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get<string>('jwtSecret')!,
+      secretOrKey: configService.get<string>('jwtAccessSecret')!,
       ignoreExpiration: false,
     });
   }
