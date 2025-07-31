@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
+import { PaginationDto } from 'src/dtos/pagination.dto';
 import { ResponseMessage } from 'src/interceptors/transformData.interceptor';
 import { User } from 'src/users/schemas/user.schema';
 import { CompaniesService } from './companies.service';
@@ -39,12 +40,8 @@ export class CompaniesController {
 
   @Get()
   @ResponseMessage('Get all companies successfully')
-  findAll(
-    @Query('page') currentPage: number,
-    @Query('limit') limit: number,
-    @Query() qs: string,
-  ) {
-    return this.companiesService.findAll({ currentPage, limit, qs });
+  findAll(@Query() query: PaginationDto) {
+    return this.companiesService.findAll(query);
   }
 
   @Delete(':id')

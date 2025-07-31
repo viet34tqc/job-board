@@ -20,7 +20,12 @@ async function bootstrap() {
     origin: configService.get<string>('frontendUrl')!,
     credentials: true,
   });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    }),
+  );
   app.useGlobalInterceptors(new TransformDataInterceptor(app.get(Reflector)));
   await app.listen(configService.get<number>('backendPort')!);
 }

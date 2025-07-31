@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
+import { PaginationDto } from 'src/dtos/pagination.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './schemas/user.schema';
@@ -27,12 +28,8 @@ export class UsersController {
   }
 
   @Get()
-  findAll(
-    @Query('page') currentPage: number,
-    @Query('limit') limit: number,
-    @Query() qs: string,
-  ) {
-    return this.usersService.findAll({ currentPage, limit, qs });
+  findAll(@Query() query: PaginationDto) {
+    return this.usersService.findAll(query);
   }
 
   // Public for displaying all the clients on homepage

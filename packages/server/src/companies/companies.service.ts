@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import aqp from 'api-query-params';
 import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { PaginationDto } from 'src/dtos/pagination.dto';
 import { User } from 'src/users/schemas/user.schema';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
@@ -59,15 +60,7 @@ export class CompaniesService {
     return { message: 'Company deleted successfully' };
   }
 
-  async findAll({
-    currentPage,
-    limit,
-    qs,
-  }: {
-    currentPage: number;
-    limit: number;
-    qs: string;
-  }) {
+  async findAll({ page: currentPage, limit, ...qs }: PaginationDto) {
     const { filter, population } = aqp(qs);
     delete filter.page;
     delete filter.limit;

@@ -8,6 +8,7 @@ import aqp from 'api-query-params';
 import * as argon2 from 'argon2';
 import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
+import { PaginationDto } from 'src/dtos/pagination.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -45,15 +46,8 @@ export class UsersService {
     return this.userModel.create(payload);
   }
 
-  async findAll({
-    currentPage,
-    limit,
-    qs,
-  }: {
-    currentPage: number;
-    limit: number;
-    qs: string;
-  }) {
+  async findAll(query: PaginationDto) {
+    const { page: currentPage, limit, ...qs } = query;
     const { filter, population } = aqp(qs);
     delete filter.page;
     delete filter.limit;
@@ -90,10 +84,7 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    const user = await this.userModel
-      .findOne({ email })
-      .select('-password')
-      .exec();
+    const user = await this.userModel.findOne({ email }).exec();
     if (!user)
       throw new NotFoundException(`User with email ${email} not found`);
     return user;
