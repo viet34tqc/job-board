@@ -1,16 +1,10 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Request as Req,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
+import { ResponseMessage } from 'src/interceptors/transformData.interceptor';
 import { RegisterUserDto } from 'src/users/dto/register-user.dto';
+import { User } from 'src/users/schemas/user.schema';
 import { AuthService } from './auth.service';
-import { RequestWithUser } from './auth.type';
-import { IsPublic } from './decoratots/auth.decorator';
+import { IsPublic, UserDecorator } from './decoratots/auth.decorator';
 import { LoginDTO } from './dto/login.dto';
 
 @Controller('auth')
@@ -33,11 +27,13 @@ export class AuthController {
   }
 
   @Get('me')
-  getProfile(@Req() req: RequestWithUser) {
+  @ResponseMessage('Get user profile successfully')
+  getProfile(@UserDecorator() user: User) {
     return {
-      id: req.user._id,
-      email: req.user.email,
-      name: req.user.name,
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
     };
   }
 }
