@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { ResponseMessage } from 'src/interceptors/transformData.interceptor';
 import { RegisterUserDto } from 'src/users/dto/register-user.dto';
 import { User } from 'src/users/schemas/user.schema';
@@ -35,5 +35,14 @@ export class AuthController {
       name: user.name,
       role: user.role,
     };
+  }
+
+  @Get('refresh-token')
+  refreshToken(
+    @Req() req: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const token = req.cookies.refreshToken as string;
+    return this.authService.refreshToken(token, response);
   }
 }

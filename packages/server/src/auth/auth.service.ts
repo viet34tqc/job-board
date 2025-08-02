@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Res } from '@nestjs/common';
+import { Injectable, Res, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
@@ -27,14 +27,14 @@ export class AuthService {
   ) {
     const user = await this.usersService.findOneByEmail(loginDto.email);
 
-    if (!user) throw new ForbiddenException('Invalid credentials');
+    if (!user) throw new UnauthorizedException('Invalid credentials');
 
     // Compare passwords
     const passwordMatches = await verify(user.password, loginDto.password);
 
     // If password incorrect throw exception
     if (!passwordMatches) {
-      throw new ForbiddenException('Invalid credentials');
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     const payload: AuthJwtPayload = {
@@ -69,5 +69,61 @@ export class AuthService {
       accessToken,
       user: payload,
     };
+  }
+
+  async refreshToken(
+    token: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    try {
+      const decodedToken = this.jwtService.verify<AuthJwtPayload>(token, {
+        secret: this.configService.get<string>('jwtRefreshSecret')!,
+      });
+      const user = await this.usersService.findOneByEmail(decodedToken.email);
+      if (!user) throw new UnauthorizedException('Invalid credentials');
+
+      // Verify the token matches the refreshToken from cookie
+      if (user.refreshToken !== token) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      const payload: AuthJwtPayload = {
+        sub: user._id as string,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      };
+
+      const [accessToken, newRefreshToken] = await Promise.all([
+        this.jwtService.signAsync(payload),
+        this.jwtService.signAsync(payload, {
+          secret: this.configService.get<string>('jwtRefreshSecret')!,
+          expiresIn: this.configService.get<string>('jwtRefreshExpiresIn')!,
+        }),
+      ]);
+
+      // Update user's newRefreshToken
+      await this.usersService.updateUserToken(
+        user._id as string,
+        newRefreshToken,
+      );
+
+      response.cookie('refreshToken', newRefreshToken, {
+        httpOnly: true,
+        sameSite: 'none',
+        maxAge: parseDuration(
+          this.configService.get<string>('jwtRefreshExpiresIn')!,
+        ),
+      });
+
+      return {
+        accessToken,
+        user: payload,
+      };
+    } catch (error) {
+      throw new UnauthorizedException(
+        error instanceof Error ? error.message : 'Invalid refresh token',
+      );
+    }
   }
 }
