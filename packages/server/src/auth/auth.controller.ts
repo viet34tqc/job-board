@@ -45,4 +45,13 @@ export class AuthController {
     const token = req.cookies.refreshToken as string;
     return this.authService.refreshToken(token, response);
   }
+
+  @Get('logout')
+  @ResponseMessage('Logged out successfully')
+  logout(
+    @Res({ passthrough: true }) response: Response,
+    @UserDecorator() user: UserDocument,
+  ) {
+    return this.authService.logout(response, user);
+  }
 }

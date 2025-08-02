@@ -5,6 +5,7 @@ import { verify } from 'argon2';
 import { Response } from 'express';
 import { parseDuration } from 'src/libs/utils';
 import { RegisterUserDto } from 'src/users/dto/register-user.dto';
+import { UserDocument } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
 import { AuthJwtPayload } from './auth.type';
 import { LoginDTO } from './dto/login.dto';
@@ -125,5 +126,15 @@ export class AuthService {
         error instanceof Error ? error.message : 'Invalid refresh token',
       );
     }
+  }
+
+  async logout(
+    @Res({ passthrough: true }) response: Response,
+    user: UserDocument,
+  ) {
+    await this.usersService.updateUserToken(user._id.toString(), '');
+    response.clearCookie('refreshToken');
+
+    return '';
   }
 }
