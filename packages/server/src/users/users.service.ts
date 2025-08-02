@@ -12,16 +12,19 @@ import { PaginationDto } from 'src/dtos/pagination.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './schemas/user.schema';
+import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private userModel: SoftDeleteModel<User>,
+    @InjectModel(User.name) private userModel: SoftDeleteModel<UserDocument>,
   ) {}
 
   // For administrator
-  async create(createUserDto: CreateUserDto, user: User): Promise<User> {
+  async create(
+    createUserDto: CreateUserDto,
+    user: UserDocument,
+  ): Promise<UserDocument> {
     // check if user already exists
     const newUser = await this.userModel
       .findOne({ email: createUserDto.email })
@@ -36,7 +39,7 @@ export class UsersService {
   }
 
   // For client
-  async register(registerDto: RegisterUserDto): Promise<User> {
+  async register(registerDto: RegisterUserDto): Promise<UserDocument> {
     const user = await this.userModel
       .findOne({ email: registerDto.email })
       .exec();
@@ -75,7 +78,7 @@ export class UsersService {
     };
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: string): Promise<UserDocument> {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const user = await this.userModel.findById(id).select('-password').exec();
@@ -93,8 +96,8 @@ export class UsersService {
   async update(
     id: string,
     updateUserDto: UpdateUserDto,
-    user: User,
-  ): Promise<User> {
+    user: UserDocument,
+  ): Promise<UserDocument> {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const payload = {
@@ -117,7 +120,7 @@ export class UsersService {
     );
   }
 
-  async remove(id: string, user: User) {
+  async remove(id: string, user: UserDocument) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const updatedUser = await this.userModel.findByIdAndUpdate(

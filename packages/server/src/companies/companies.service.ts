@@ -4,18 +4,19 @@ import aqp from 'api-query-params';
 import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { PaginationDto } from 'src/dtos/pagination.dto';
-import { User } from 'src/users/schemas/user.schema';
+import { UserDocument } from 'src/users/schemas/user.schema';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
-import { Company } from './schemas/company.schema';
+import { Company, CompanyDocument } from './schemas/company.schema';
 
 @Injectable()
 export class CompaniesService {
   constructor(
-    @InjectModel(Company.name) private companyModel: SoftDeleteModel<Company>,
+    @InjectModel(Company.name)
+    private companyModel: SoftDeleteModel<CompanyDocument>,
   ) {}
 
-  create(createCompanyDto: CreateCompanyDto, user: User) {
+  create(createCompanyDto: CreateCompanyDto, user: UserDocument) {
     return this.companyModel.create({
       ...createCompanyDto,
       createdBy: {
@@ -24,7 +25,11 @@ export class CompaniesService {
       },
     });
   }
-  async update(id: string, updateCompanyDto: UpdateCompanyDto, user: User) {
+  async update(
+    id: string,
+    updateCompanyDto: UpdateCompanyDto,
+    user: UserDocument,
+  ) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const updatedCompany = await this.companyModel.findByIdAndUpdate(
@@ -43,7 +48,7 @@ export class CompaniesService {
     return updatedCompany;
   }
 
-  async delete(id: string, user: User) {
+  async delete(id: string, user: UserDocument) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const company = await this.companyModel.findById(id).exec();

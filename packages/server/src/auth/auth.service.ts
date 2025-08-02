@@ -38,7 +38,7 @@ export class AuthService {
     }
 
     const payload: AuthJwtPayload = {
-      sub: user._id as string,
+      sub: user._id.toString(),
       email: user.email,
       name: user.name,
       role: user.role,
@@ -54,7 +54,7 @@ export class AuthService {
     ]);
 
     // Update user's refreshToken
-    await this.usersService.updateUserToken(user._id as string, refreshToken);
+    await this.usersService.updateUserToken(user._id.toString(), refreshToken);
 
     response.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -88,7 +88,7 @@ export class AuthService {
       }
 
       const payload: AuthJwtPayload = {
-        sub: user._id as string,
+        sub: user._id.toString(),
         email: user.email,
         name: user.name,
         role: user.role,
@@ -104,7 +104,7 @@ export class AuthService {
 
       // Update user's newRefreshToken
       await this.usersService.updateUserToken(
-        user._id as string,
+        user._id.toString(),
         newRefreshToken,
       );
 

@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { User } from 'src/users/schemas/user.schema';
+import { UserDocument } from 'src/users/schemas/user.schema';
 
 export type AuthJwtPayload = {
   email: string;
@@ -9,5 +9,5 @@ export type AuthJwtPayload = {
 };
 
 export interface RequestWithUser extends Request {
-  user: User;
+  user: UserDocument;
 }

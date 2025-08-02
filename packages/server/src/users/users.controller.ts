@@ -12,7 +12,7 @@ import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/dtos/pagination.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './schemas/user.schema';
+import { UserDocument } from './schemas/user.schema';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -22,8 +22,8 @@ export class UsersController {
   @Post()
   async create(
     @Body() createUserDto: CreateUserDto,
-    @UserDecorator() user: User,
-  ): Promise<User> {
+    @UserDecorator() user: UserDocument,
+  ): Promise<UserDocument> {
     return await this.usersService.create(createUserDto, user);
   }
 
@@ -35,7 +35,7 @@ export class UsersController {
   // Public for displaying all the clients on homepage
   @IsPublic()
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<User> {
+  async findOne(@Param('id') id: string): Promise<UserDocument> {
     return await this.usersService.findOne(id);
   }
 
@@ -43,13 +43,13 @@ export class UsersController {
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-    @UserDecorator() user: User,
-  ): Promise<User> {
+    @UserDecorator() user: UserDocument,
+  ): Promise<UserDocument> {
     return this.usersService.update(id, updateUserDto, user);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string, @UserDecorator() user: User) {
+  async remove(@Param('id') id: string, @UserDecorator() user: UserDocument) {
     return this.usersService.remove(id, user);
   }
 }

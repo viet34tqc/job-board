@@ -1,15 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export enum UserRole {
   USER = 'user',
   ADMIN = 'admin',
 }
 
+export type UserDocument = HydratedDocument<User>;
+
 // @Schema decorator with timestamps: true automatically adds and manages
 // createdAt and updatedAt fields in the document
 @Schema({ timestamps: true })
-export class User extends Document {
+export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
