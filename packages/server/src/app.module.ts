@@ -9,8 +9,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { CompaniesModule } from './companies/companies.module';
-import configuration from './config/configuration';
-import { validate } from './config/env.validation';
+import configuration from './core/config/configuration';
+import { validate } from './core/config/env.validation';
 import { UsersModule } from './users/users.module';
 
 @Module({

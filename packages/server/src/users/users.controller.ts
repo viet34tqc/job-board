@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
-import { PaginationDto } from 'src/dtos/pagination.dto';
+import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDocument } from './schemas/user.schema';

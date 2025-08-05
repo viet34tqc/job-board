@@ -8,7 +8,7 @@ import aqp from 'api-query-params';
 import * as argon2 from 'argon2';
 import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
-import { PaginationDto } from 'src/dtos/pagination.dto';
+import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';

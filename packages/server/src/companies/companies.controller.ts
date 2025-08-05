@@ -9,8 +9,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
-import { PaginationDto } from 'src/dtos/pagination.dto';
-import { ResponseMessage } from 'src/interceptors/transformData.interceptor';
+import { PaginationDto } from 'src/core/dtos/pagination.dto';
+import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';

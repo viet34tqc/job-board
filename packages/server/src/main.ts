@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import { TransformDataInterceptor } from './interceptors/transformData.interceptor';
+import { TransformDataInterceptor } from './core/interceptors/transformData.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
