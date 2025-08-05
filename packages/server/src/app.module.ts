@@ -11,7 +11,6 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { CompaniesModule } from './companies/companies.module';
 import configuration from './config/configuration';
 import { validate } from './config/env.validation';
-import { Example, ExampleSchema } from './schemas/example.schema';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -33,7 +32,6 @@ import { UsersModule } from './users/users.module';
       }),
       inject: [ConfigService],
     }),
-    MongooseModule.forFeature([{ name: Example.name, schema: ExampleSchema }]),
     UsersModule,
     AuthModule,
     CompaniesModule,
