@@ -21,7 +21,6 @@ export class JobsService {
 
   validateDateRange(startDate?: Date, endDate?: Date) {
     if (!startDate || !endDate) return;
-    console.log('startDate > endDate', startDate > endDate);
     if (startDate > endDate) {
       throw new BadRequestException('Start date must be before end date');
     }
@@ -71,8 +70,6 @@ export class JobsService {
   }
 
   update(id: string, updateJobDto: UpdateJobDto, user: UserDocument) {
-    console.log('updateJobDto', updateJobDto);
-    console.log('id', id);
     this.validateDateRange(updateJobDto.startDate, updateJobDto.endDate);
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);

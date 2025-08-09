@@ -11,8 +11,9 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { CompaniesModule } from './companies/companies.module';
 import configuration from './core/config/configuration';
 import { validate } from './core/config/env.validation';
-import { UsersModule } from './users/users.module';
+import { FilesModule } from './files/files.module';
 import { JobsModule } from './jobs/jobs.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { JobsModule } from './jobs/jobs.module';
     AuthModule,
     CompaniesModule,
     JobsModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [
