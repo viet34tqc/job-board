@@ -12,6 +12,7 @@ import { CompaniesModule } from './companies/companies.module';
 import configuration from './core/config/configuration';
 import { validate } from './core/config/env.validation';
 import { UsersModule } from './users/users.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthModule,
     CompaniesModule,
+    JobsModule,
   ],
   controllers: [AppController],
   providers: [
