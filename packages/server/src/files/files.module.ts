@@ -5,12 +5,13 @@ import { diskStorage } from 'multer';
 import * as path from 'path';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
+import { UploadRequest } from './types';
 
 const uploadDir = path.join(process.cwd(), 'uploads');
 
-function ensureUploadDir() {
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+function ensureUploadDir(uploadPath: string) {
+  if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
   }
 }
 
@@ -27,11 +28,14 @@ function ensureUploadDir() {
         cb(null, true);
       },
       storage: diskStorage({
-        destination: (req, file, cb) => {
-          ensureUploadDir();
-          cb(null, uploadDir);
+        destination: (req: UploadRequest, file, cb) => {
+          const uploadPath = req.body?.folder
+            ? path.join(uploadDir, req.body.folder)
+            : uploadDir;
+          ensureUploadDir(uploadPath);
+          cb(null, uploadPath);
         },
-        filename: (req, file, cb) => {
+        filename: (req: UploadRequest, file, cb) => {
           const ext = path.extname(file.originalname);
           const base = path
             .basename(file.originalname, ext)
