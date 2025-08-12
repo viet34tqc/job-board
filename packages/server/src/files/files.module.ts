@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { BadRequestException, Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { diskStorage } from 'multer';
@@ -20,23 +20,28 @@ function ensureUploadDir(uploadPath: string) {
     MulterModule.register({
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
       fileFilter: (req, file, cb) => {
+        if (!file) {
+          return cb(new BadRequestException('File is required'), false);
+        }
         const allowed =
           /^(image\/.*|application\/pdf|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/i.test(
             file.mimetype,
           );
-        if (!allowed) return cb(new Error('Unsupported file type'), false);
+        if (!allowed)
+          return cb(new BadRequestException('Unsupported file type'), false);
         cb(null, true);
       },
       storage: diskStorage({
         destination: (req: UploadRequest, file, cb) => {
-          const uploadPath = req.body?.folder
-            ? path.join(uploadDir, req.body.folder)
+          const uploadPath = req.headers?.folder
+            ? path.join(uploadDir, req.headers.folder)
             : uploadDir;
           ensureUploadDir(uploadPath);
           cb(null, uploadPath);
         },
         filename: (req: UploadRequest, file, cb) => {
           const ext = path.extname(file.originalname);
+          // File name without extension
           const base = path
             .basename(file.originalname, ext)
             .toLowerCase()

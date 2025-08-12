@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 export interface UploadRequest extends Request {
-  body: {
+  headers: {
     folder?: string;
   };
 }

@@ -1,8 +1,6 @@
 import {
+  Body,
   Controller,
-  Get,
-  NotFoundException,
-  Param,
   Post,
   Req,
   Res,
@@ -12,10 +10,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
-import { createReadStream } from 'fs';
-import { stat } from 'fs/promises';
-import * as path from 'path';
 import { IsPublic } from 'src/auth/decoratots/auth.decorator';
+import { ServeFileDto } from './dtos/serve-file.dto';
 import { FilesService } from './files.service';
 import { UploadRequest } from './types';
 
@@ -24,28 +20,9 @@ export class FilesController {
   constructor(private filesService: FilesService) {}
 
   @IsPublic()
-  @Get('uploads/:filename')
-  async serveFile(@Param('filename') filename: string, @Res() res: Response) {
-    const filePath = path.join(process.cwd(), 'uploads', filename);
-
-    // Check if file exists
-    try {
-      await stat(filePath);
-    } catch {
-      throw new NotFoundException('File not found');
-    }
-
-    // Set appropriate headers
-    res.setHeader('Content-Type', 'application/octet-stream');
-
-    // Stream the file
-    const fileStream = createReadStream(filePath);
-    fileStream.pipe(res);
-
-    // Handle stream errors
-    fileStream.on('error', () => {
-      throw new NotFoundException('Error reading file');
-    });
+  @Post('serve')
+  async serveFile(@Body() serveFileDto: ServeFileDto, @Res() res: Response) {
+    return this.filesService.serveFile(serveFileDto.filePath, res);
   }
 
   @Post('upload')
@@ -54,7 +31,7 @@ export class FilesController {
     @UploadedFile() file: Express.Multer.File,
     @Req() req: UploadRequest,
   ) {
-    return this.filesService.buildFileResponse(file, req.body?.folder);
+    return this.filesService.buildFileResponse(file, req.headers?.folder);
   }
 
   @Post('uploads')
@@ -63,6 +40,6 @@ export class FilesController {
     @UploadedFiles() files: Express.Multer.File[],
     @Req() req: UploadRequest,
   ) {
-    return this.filesService.buildFilesResponse(files, req.body?.folder);
+    return this.filesService.buildFilesResponse(files, req.headers?.folder);
   }
 }
