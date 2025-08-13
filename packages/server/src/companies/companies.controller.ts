@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
+import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor';
 import { UserDocument } from 'src/users/schemas/user.schema';
@@ -39,9 +39,17 @@ export class CompaniesController {
   }
 
   @Get()
+  @IsPublic()
   @ResponseMessage('Get all companies successfully')
   findAll(@Query() query: PaginationDto) {
     return this.companiesService.findAll(query);
+  }
+
+  @Get(':id')
+  @IsPublic()
+  @ResponseMessage('Get company successfully')
+  findOne(@Param('id') id: string) {
+    return this.companiesService.findOne(id);
   }
 
   @Delete(':id')

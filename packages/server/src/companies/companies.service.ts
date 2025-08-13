@@ -91,4 +91,12 @@ export class CompaniesService {
       results,
     };
   }
+
+  async findOne(id: string) {
+    if (!mongoose.Types.ObjectId.isValid(id))
+      throw new NotFoundException(`Invalid ID ${id}`);
+    const company = await this.companyModel.findById(id).exec();
+    if (!company) throw new NotFoundException('Company not found');
+    return company;
+  }
 }

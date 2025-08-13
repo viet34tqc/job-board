@@ -15,6 +15,9 @@ export class Company {
   address?: string;
 
   @Prop()
+  logo?: string;
+
+  @Prop()
   createdAt: Date;
 
   @Prop()

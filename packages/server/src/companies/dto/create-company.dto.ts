@@ -10,4 +10,8 @@ export class CreateCompanyDto {
   @IsNotEmpty()
   @IsOptional()
   address?: string;
+
+  @IsNotEmpty()
+  @IsOptional()
+  logo?: string;
 }
