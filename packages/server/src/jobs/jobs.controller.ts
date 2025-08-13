@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
+import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor';
 import { UserDocument } from 'src/users/schemas/user.schema';
@@ -29,12 +29,14 @@ export class JobsController {
     return this.jobsService.create(createJobDto, user);
   }
 
+  @IsPublic()
   @Get()
   @ResponseMessage('Get all jobs successfully')
   findAll(@Query() query: PaginationDto) {
     return this.jobsService.findAll(query);
   }
 
+  @IsPublic()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.jobsService.findOne(id);

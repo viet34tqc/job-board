@@ -14,13 +14,14 @@ export class Job {
   skills: string[];
 
   @Prop({ type: Object })
-  company?: {
+  company: {
     _id: mongoose.Schema.Types.ObjectId;
     name: string;
+    logo?: string;
   };
 
   @Prop()
-  location?: string;
+  location: string;
 
   @Prop()
   salary?: number;

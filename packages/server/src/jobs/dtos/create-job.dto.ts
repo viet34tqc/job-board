@@ -35,11 +35,14 @@ export class CreateJobDto {
   @IsString()
   description: string;
 
-  @IsOptional()
   @IsObject()
   @ValidateNested()
   @Type(() => Company)
-  company?: Company;
+  company: Company;
+
+  @IsNotEmpty()
+  @IsString()
+  location: string;
 
   @IsOptional()
   @IsNumber()
