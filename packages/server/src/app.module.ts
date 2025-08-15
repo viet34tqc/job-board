@@ -14,6 +14,7 @@ import { validate } from './core/config/env.validation';
 import { FilesModule } from './files/files.module';
 import { JobsModule } from './jobs/jobs.module';
 import { UsersModule } from './users/users.module';
+import { ResumeModule } from './resume/resume.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { UsersModule } from './users/users.module';
     CompaniesModule,
     JobsModule,
     FilesModule,
+    ResumeModule,
   ],
   controllers: [AppController],
   providers: [

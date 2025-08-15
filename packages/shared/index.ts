@@ -5,3 +5,12 @@ export interface Example {
   createdAt: string;
   updatedAt: string;
 }
+
+export type ResumeStatus = keyof typeof RESUME_STATUS;
+
+export const RESUME_STATUS = {
+  PENDING: 'PENDING',
+  REVIEWING: 'REVIEWING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+} as const satisfies Record<string, string>;
