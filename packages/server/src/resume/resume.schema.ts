@@ -33,12 +33,6 @@ export class Resume {
   }>;
 
   @Prop()
-  address?: string;
-
-  @Prop()
-  logo?: string;
-
-  @Prop()
   createdAt: Date;
 
   @Prop()
