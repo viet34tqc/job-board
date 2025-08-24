@@ -6,10 +6,11 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/client ./packages/client
 COPY packages/shared ./packages/shared
-# ... means install client and shared dependencies
-RUN pnpm install --frozen-lockfile --filter=client...
+# Install all workspace deps so shared devDependencies (typescript) are available
+RUN pnpm install --frozen-lockfile
 
 # Go to client folder and build
+RUN pnpm -C packages/shared build
 WORKDIR /app/packages/client
 RUN pnpm build
 

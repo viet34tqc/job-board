@@ -28,6 +28,9 @@ WORKDIR /app/packages/server
 
 COPY --from=builder /app/packages/server/dist ./dist
 
+# Ensure compiled shared package is available at runtime
+COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
+
 COPY packages/server/entrypoint.sh .
 RUN chmod +x ./entrypoint.sh
 

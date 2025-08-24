@@ -30,7 +30,7 @@ services:
             - node_modules
         - action: sync
           path: ../packages/shared
-          target: /app/packages/server/node_modules/@base/shared
+          target: /app/packages/shared
         - action: rebuild
           path: ../pnpm-lock.yaml
   client:
@@ -57,7 +57,7 @@ services:
           path: ../pnpm-lock.yaml
         - action: sync
           path: ../packages/shared
-          target: /app/packages/client/node_modules/@base/shared
+          target: /app/packages/shared
 
 volumes:
   mongo_data:
