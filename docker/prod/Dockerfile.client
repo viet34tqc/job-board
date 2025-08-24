@@ -9,8 +9,9 @@ COPY packages/shared ./packages/shared
 # Install all workspace deps so shared devDependencies (typescript) are available
 RUN pnpm install --frozen-lockfile
 
-# Go to client folder and build
+# Not strictly required for the client bundle (Vite can follow TS sources)
 RUN pnpm -C packages/shared build
+# Go to client folder and build
 WORKDIR /app/packages/client
 RUN pnpm build
 
