@@ -104,6 +104,14 @@ This will start:
 - Backend server: `http://localhost:3000`
 - MongoDB: `27017`
 
+How it works:
+
+- Server (NestJS):
+  - Need to pre-built JS in shared module first because when we import runtime constant from shared module, Node.js in server container can't execute TypeScript directly.
+  - When we install all the packages using pnpm workspace, pnpm sees `@base/shared` in `packages/server/package.json` and creates a symlink from `node_modules/@base/shared` to `/app/packages/shared
+  - When we have change in the shared module, we use watch to sync code from local `packages/shared` to `/app/packages/shared`. So the flow of change is `package/shared` => `/app/packages/shared` => `packages/server/node_modules/@base/shared`.
+- Client (Vite): Using `esbuild` and handles TypeScript natively during development. It transform TypeScript syntax to JavaScript on the fly. So we don't need to pre-build JS in shared folder
+
 ## Codebase and Feature documentation
 
 ### Transform data using `transformData.decorator.ts`
@@ -112,7 +120,7 @@ The response from the server will be in the following format:
 
 ```json
 {
-  "statusCode": 200,
+  "statusCode": 200, 
   "data": T
 }
 ```
