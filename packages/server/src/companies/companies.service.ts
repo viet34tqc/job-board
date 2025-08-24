@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import aqp from 'api-query-params';
 import mongoose from 'mongoose';
@@ -94,7 +98,7 @@ export class CompaniesService {
 
   async findOne(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id))
-      throw new NotFoundException(`Invalid ID ${id}`);
+      throw new BadRequestException(`Invalid ID ${id}`);
     const company = await this.companyModel.findById(id).exec();
     if (!company) throw new NotFoundException('Company not found');
     return company;

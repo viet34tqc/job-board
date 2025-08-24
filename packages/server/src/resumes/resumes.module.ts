@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ResumeController } from './resume.controller';
 import { Resume, ResumeSchema } from './resume.schema';
-import { ResumeService } from './resume.service';
+import { ResumesController } from './resumes.controller';
+import { ResumesService } from './resumes.service';
 
 @Module({
-  providers: [ResumeService],
-  controllers: [ResumeController],
+  providers: [ResumesService],
+  controllers: [ResumesController],
   imports: [
     MongooseModule.forFeature([{ name: Resume.name, schema: ResumeSchema }]),
   ],
 })
-export class ResumeModule {}
+export class ResumesModule {}
