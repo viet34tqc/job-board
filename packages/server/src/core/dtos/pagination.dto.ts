@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsNumber, Min } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class PaginationDto {
   @IsNumber()
@@ -12,5 +12,11 @@ export class PaginationDto {
   @Type(() => Number)
   limit: number;
 
-  [key: string]: any;
+  @IsOptional()
+  @IsString()
+  populate?: string;
+
+  @IsOptional()
+  @IsString()
+  fields?: string;
 }

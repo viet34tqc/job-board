@@ -49,6 +49,8 @@ export class ResumesService {
   }
 
   async findAll({ page: currentPage, limit, ...qs }: PaginationDto) {
+    // aqp needs populate and returns population
+    // Example: ?page=1&limit=10&populate=companyId,jobId&fields=companyId._id,companyId.name,jobId._id,jobId.name
     const { filter, population } = aqp(qs);
     delete filter.page;
     delete filter.limit;
@@ -61,7 +63,10 @@ export class ResumesService {
       .find(filter)
       .skip(skip)
       .limit(defaultLimit)
+      // Populate is used to join table
+      // population: [{ path: "companyId" }, { path: "jobId" }]
       .populate(population)
+      // projection is used to select fields
       .exec();
 
     return {

@@ -31,7 +31,11 @@ export class ResumesController {
 
   @Get()
   @ResponseMessage('Get all resumes')
-  findAll(@Query() query: PaginationDto) {
+  findAll(
+    @Query()
+    query: PaginationDto,
+  ) {
+    console.log('query', query);
     return this.resumesService.findAll(query);
   }
 

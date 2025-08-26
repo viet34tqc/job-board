@@ -1,6 +1,8 @@
 import { ResumeStatus } from '@base/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Company } from 'src/companies/schemas/company.schema';
+import { Job } from 'src/jobs/jobs.schema';
 
 export type ResumeDocument = HydratedDocument<Resume>;
 
@@ -12,10 +14,14 @@ export class Resume {
   @Prop()
   userId: mongoose.Schema.Types.ObjectId;
 
-  @Prop()
+  // This is like foreign key
+  // The value of companyId is the _id of Company
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Company.name })
   companyId: mongoose.Schema.Types.ObjectId;
 
-  @Prop()
+  // This is like foreign key
+  // The value of jobId is the _id of Job
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Job.name })
   jobId: mongoose.Schema.Types.ObjectId;
 
   @Prop()
