@@ -14,3 +14,10 @@ export const RESUME_STATUS = {
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
 } as const satisfies Record<string, string>;
+
+export const PERMISSION_METHOD = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+} as const satisfies Record<string, string>;

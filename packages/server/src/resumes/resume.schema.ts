@@ -1,4 +1,4 @@
-import { ResumeStatus } from '@base/shared';
+import { RESUME_STATUS, ResumeStatus } from '@base/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Company } from 'src/companies/schemas/company.schema';
@@ -28,7 +28,9 @@ export class Resume {
   url: string;
 
   // Only approved resume can be used to apply for a job and company can see it
-  @Prop()
+  // Validate at runtime database and prevent invalid values from being saved to the database
+  @Prop({ enum: Object.values(RESUME_STATUS) })
+  // Provide TS checking at compile time
   status: ResumeStatus;
 
   @Prop()

@@ -35,7 +35,6 @@ export class ResumesController {
     @Query()
     query: PaginationDto,
   ) {
-    console.log('query', query);
     return this.resumesService.findAll(query);
   }
 

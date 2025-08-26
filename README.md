@@ -27,6 +27,8 @@ Other entities:
 - **Subscription**: Represents a subscription with properties such as user, skill, and start date.
 - **CV**: Represents a CV with properties such as user, job, and file.
 - **Skills**: Represents a skill such as "React", "Node.js", "Python", etc.
+- **Roles**: Represents a role such as "Candidate", "Employer", "Admin", etc.
+- **Permissions**: Represents a permission such as "Create", "Read", "Update", "Delete", etc.
 
 ## Relationships
 
@@ -36,6 +38,10 @@ Other entities:
 - **Job** belongs to one **Company**.
 - **Job** has many **Skills**.
 - **Skill** belongs to many **Job**.
+- **Role** has many **Permissions**.
+- **Permission** belongs to many **Role**.
+- **User** has one **Role**.
+- **Role** belongs to one **User**.
 
 ## User Roles and Functionalities
 
@@ -120,7 +126,7 @@ The response from the server will be in the following format:
 
 ```json
 {
-  "statusCode": 200, 
+  "statusCode": 200,
   "data": T
 }
 ```

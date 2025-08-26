@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
-import { CreateCvDto } from './dtos/create-cv.dto';
+import { CreateResumeDto } from './dtos/create-resume.dto';
 import { Resume, ResumeDocument } from './resume.schema';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class ResumesService {
     private resumeModel: SoftDeleteModel<ResumeDocument>,
   ) {}
 
-  async create(createCvDto: CreateCvDto, user: UserDocument) {
+  async create(createCvDto: CreateResumeDto, user: UserDocument) {
     const newCv = await this.resumeModel.create({
       ...createCvDto,
       email: user.email,
@@ -51,7 +51,7 @@ export class ResumesService {
   async findAll({ page: currentPage, limit, ...qs }: PaginationDto) {
     // aqp needs populate and returns population
     // Example: ?page=1&limit=10&populate=companyId,jobId&fields=companyId._id,companyId.name,jobId._id,jobId.name
-    const { filter, population } = aqp(qs);
+    const { filter, population, projection } = aqp(qs);
     delete filter.page;
     delete filter.limit;
     const defaultLimit = limit ?? 10;
@@ -67,6 +67,7 @@ export class ResumesService {
       // population: [{ path: "companyId" }, { path: "jobId" }]
       .populate(population)
       // projection is used to select fields
+      .select(projection)
       .exec();
 
     return {
