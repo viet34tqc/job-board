@@ -1,3 +1,4 @@
+import { PERMISSION_METHOD } from '@base/shared';
 import { IsIn, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePermissionDto {
@@ -9,7 +10,7 @@ export class CreatePermissionDto {
   @IsNotEmpty()
   apiPath: string;
 
-  @IsIn(['GET', 'POST', 'PUT', 'DELETE'])
+  @IsIn(Object.values(PERMISSION_METHOD))
   @IsNotEmpty()
   method: string;
 

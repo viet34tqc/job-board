@@ -1,3 +1,4 @@
+import { PERMISSION_METHOD } from '@base/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
@@ -11,7 +12,7 @@ export class Permission {
   @Prop({ required: true })
   apiPath: string;
 
-  @Prop({ required: true, enum: ['GET', 'POST', 'PUT', 'DELETE'] })
+  @Prop({ required: true, enum: Object.values(PERMISSION_METHOD) })
   method: string;
 
   @Prop()
