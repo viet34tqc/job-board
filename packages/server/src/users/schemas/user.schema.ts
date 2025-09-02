@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Role } from 'src/roles/role.schema';
 
 export enum UserRole {
   USER = 'user',
@@ -36,8 +37,12 @@ export class User {
   @Prop()
   gender?: string;
 
-  @Prop()
-  role: UserRole;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: Role.name,
+  })
+  role: mongoose.Schema.Types.ObjectId;
 
   // For simplicity
   @Prop()

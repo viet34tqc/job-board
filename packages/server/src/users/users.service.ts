@@ -9,15 +9,17 @@ import * as argon2 from 'argon2';
 import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Role, RoleDocument } from 'src/roles/role.schema';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { RegisterUserDto } from './dtos/register-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: SoftDeleteModel<UserDocument>,
+    @InjectModel(Role.name) private roleModel: SoftDeleteModel<RoleDocument>,
   ) {}
 
   // For administrator
@@ -44,7 +46,13 @@ export class UsersService {
       .findOne({ email: registerDto.email })
       .exec();
     if (user) throw new BadRequestException(`User already exists`);
-    const payload = { ...registerDto, role: 'user' };
+
+    // Find the default 'user' role
+    const userRole = await this.roleModel.findOne({ name: 'user' });
+    if (!userRole) {
+      throw new NotFoundException('Default user role not found');
+    }
+    const payload = { ...registerDto, role: userRole._id };
     payload.password = await argon2.hash(registerDto.password);
     return this.userModel.create(payload);
   }
@@ -81,7 +89,11 @@ export class UsersService {
   async findOne(id: string): Promise<UserDocument> {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
-    const user = await this.userModel.findById(id).select('-password').exec();
+    const user = await this.userModel
+      .findById(id)
+      .select('-password')
+      .populate({ path: 'role', select: { _id: 1, name: 1 } })
+      .exec();
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
     return user;
   }

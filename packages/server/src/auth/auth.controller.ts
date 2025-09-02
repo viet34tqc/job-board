@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor';
-import { RegisterUserDto } from 'src/users/dto/register-user.dto';
+import { RegisterUserDto } from 'src/users/dtos/register-user.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { AuthService } from './auth.service';
 import { IsPublic, UserDecorator } from './decoratots/auth.decorator';

@@ -90,7 +90,14 @@ export class ResumesService {
   }
 
   async findByUser(user: UserDocument) {
-    return this.resumeModel.find({ userId: user._id }).exec();
+    return this.resumeModel
+      .find({ userId: user._id })
+      .sort({ createdAt: -1 })
+      .populate([
+        { path: 'companyId', select: { name: 1 } },
+        { path: 'jobId', select: { name: 1 } },
+      ])
+      .exec();
   }
 
   async update(id: string, status: ResumeStatus, user: UserDocument) {

@@ -9,8 +9,8 @@ import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
-import { CreateRoleDto } from './dtds/create-role.dto';
-import { UpdateRoleDto } from './dtds/update-role.dto';
+import { CreateRoleDto } from './dtos/create-role.dto';
+import { UpdateRoleDto } from './dtos/update-role.dto';
 import { Role, RoleDocument } from './role.schema';
 
 @Injectable()
@@ -59,10 +59,11 @@ export class RolesService {
       throw new BadRequestException(`Invalid ID ${id}`);
     const role = await this.roleModel
       .findById(id)
-      // Join the table permissions
+      // Join the table via the permissions field
+      // permissions field is a reference to the Permission collection
       .populate({
         path: 'permissions',
-        select: { _id: 1, apiPath: 1, method: 1, name: 1 },
+        select: { _id: 1, apiPath: 1, method: 1, name: 1, module: 1 },
       })
       .exec();
     if (!role) throw new NotFoundException('Role not found');

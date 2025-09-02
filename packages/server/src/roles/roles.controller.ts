@@ -11,8 +11,8 @@ import {
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
-import { CreateRoleDto } from './dtds/create-role.dto';
-import { UpdateRoleDto } from './dtds/update-role.dto';
+import { CreateRoleDto } from './dtos/create-role.dto';
+import { UpdateRoleDto } from './dtos/update-role.dto';
 import { RolesService } from './roles.service';
 
 @Controller('roles')

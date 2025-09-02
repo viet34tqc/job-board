@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserDocument } from './schemas/user.schema';
 import { UsersService } from './users.service';
 

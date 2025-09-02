@@ -28,6 +28,7 @@ services:
           target: /app/packages/server
           ignore:
             - node_modules
+            - dist
         - action: sync
           path: ../packages/shared
           target: /app/packages/shared
@@ -53,6 +54,7 @@ services:
           target: /app/packages/client
           ignore:
             - node_modules
+            - dist
         - action: rebuild
           path: ../pnpm-lock.yaml
         - action: sync
