@@ -7,6 +7,12 @@ services:
       - ../.env
     volumes:
       - mongo_data:/data/db
+    logging:
+      driver: "none"
+    command: >-
+      --quiet
+      --logpath /dev/null
+      --logappend
 
   server:
     build:
