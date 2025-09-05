@@ -19,7 +19,7 @@ export const mockPermissions = [
   {
     name: 'Update User',
     apiPath: '/api/v1/users/:id',
-    method: PERMISSION_METHOD.PUT,
+    method: PERMISSION_METHOD.PATCH,
     module: 'USERS',
     isDeleted: false,
   },
@@ -65,7 +65,7 @@ export const mockPermissions = [
   {
     name: 'Update Permission',
     apiPath: '/api/v1/permissions/:id',
-    method: PERMISSION_METHOD.PUT,
+    method: PERMISSION_METHOD.PATCH,
     module: 'PERMISSIONS',
     isDeleted: false,
   },
@@ -95,7 +95,7 @@ export const mockPermissions = [
   {
     name: 'Update Job',
     apiPath: '/api/v1/jobs/:id',
-    method: PERMISSION_METHOD.PUT,
+    method: PERMISSION_METHOD.PATCH,
     module: 'JOBS',
     isDeleted: false,
   },
@@ -125,7 +125,7 @@ export const mockPermissions = [
   {
     name: 'Update Resume Status',
     apiPath: '/api/v1/resumes/:id/status',
-    method: PERMISSION_METHOD.PUT,
+    method: PERMISSION_METHOD.PATCH,
     module: 'RESUMES',
     isDeleted: false,
   },
