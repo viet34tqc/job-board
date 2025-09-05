@@ -13,8 +13,8 @@ import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { CompaniesService } from './companies.service';
-import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
+import { CreateCompanyDto } from './dtos/create-company.dto';
+import { UpdateCompanyDto } from './dtos/update-company.dto';
 import { CompanyDocument } from './schemas/company.schema';
 
 @Controller('companies')

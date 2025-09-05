@@ -17,6 +17,7 @@ import { UsersModule } from './users/users.module';
 import { ResumesModule } from './resumes/resumes.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
+import { MockModule } from './mock/mock.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { RolesModule } from './roles/roles.module';
     ResumesModule,
     PermissionsModule,
     RolesModule,
+    MockModule,
   ],
   controllers: [AppController],
   providers: [

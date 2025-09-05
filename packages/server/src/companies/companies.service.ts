@@ -9,8 +9,8 @@ import mongoose from 'mongoose';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
-import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
+import { CreateCompanyDto } from './dtos/create-company.dto';
+import { UpdateCompanyDto } from './dtos/update-company.dto';
 import { Company, CompanyDocument } from './schemas/company.schema';
 
 @Injectable()

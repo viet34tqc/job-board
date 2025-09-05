@@ -1,6 +1,6 @@
 import { PERMISSION_METHOD } from '@base/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 
 export type PermissionDocument = HydratedDocument<Permission>;
 
@@ -32,19 +32,19 @@ export class Permission {
 
   @Prop({ type: Object })
   createdBy: {
-    _id: mongoose.Schema.Types.ObjectId;
+    _id: Types.ObjectId;
     email: string;
   };
 
   @Prop({ type: Object })
   updatedBy: {
-    _id: mongoose.Schema.Types.ObjectId;
+    _id: Types.ObjectId;
     email: string;
   };
 
   @Prop({ type: Object })
   deletedBy: {
-    _id: mongoose.Schema.Types.ObjectId;
+    _id: Types.ObjectId;
     email: string;
   };
 }

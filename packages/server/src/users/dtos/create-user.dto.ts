@@ -7,11 +7,11 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
 
 class Company {
   @IsNotEmpty()
-  _id: mongoose.Schema.Types.ObjectId;
+  _id: Types.ObjectId;
   @IsNotEmpty()
   name: string;
 }
@@ -46,5 +46,5 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsMongoId()
-  role: mongoose.Schema.Types.ObjectId;
+  role: Types.ObjectId;
 }

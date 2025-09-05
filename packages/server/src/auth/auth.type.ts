@@ -1,12 +1,12 @@
 import { Request } from 'express';
-import mongoose from 'mongoose';
 import { UserDocument } from 'src/users/schemas/user.schema';
+import { Types } from 'mongoose';
 
 export type AuthJwtPayload = {
   email: string;
   sub: string;
   name: string;
-  role: mongoose.Schema.Types.ObjectId;
+  role: Types.ObjectId;
 };
 
 export interface RequestWithUser extends Request {
