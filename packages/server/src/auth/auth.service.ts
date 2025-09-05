@@ -3,7 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
 import { Response } from 'express';
+import { Types } from 'mongoose';
 import { parseDuration } from 'src/core/libs/utils';
+import { RoleDocument } from 'src/roles/role.schema';
+import { RolesService } from 'src/roles/roles.service';
 import { RegisterUserDto } from 'src/users/dtos/register-user.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
@@ -16,6 +19,7 @@ export class AuthService {
     private jwtService: JwtService,
     private usersService: UsersService,
     private configService: ConfigService,
+    private roleService: RolesService,
   ) {}
 
   async signup(registerUserDto: RegisterUserDto) {
@@ -38,11 +42,25 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    // Find role from user.role
+    const role = (await this.roleService.findOne(
+      user.role.toString(),
+    )) as unknown as RoleDocument & {
+      permissions: {
+        _id: Types.ObjectId;
+        name: string;
+        apiPath: string;
+        method: string;
+        module: string;
+      };
+    };
+    if (!role) throw new UnauthorizedException('Invalid role');
+
     const payload: AuthJwtPayload = {
       sub: user._id.toString(),
       email: user.email,
       name: user.name,
-      role: user.role,
+      role: { _id: role._id, name: role.name },
     };
 
     // Generate JWT tokens
@@ -68,7 +86,10 @@ export class AuthService {
     // Return user and token
     return {
       accessToken,
-      user: payload,
+      user: {
+        ...payload,
+        permissions: role.permissions,
+      },
     };
   }
 
@@ -88,11 +109,25 @@ export class AuthService {
         throw new UnauthorizedException('Invalid refresh token');
       }
 
+      // Find role from user.role
+      const role = (await this.roleService.findOne(
+        user.role.toString(),
+      )) as unknown as RoleDocument & {
+        permissions: {
+          _id: Types.ObjectId;
+          name: string;
+          apiPath: string;
+          method: string;
+          module: string;
+        };
+      };
+      if (!role) throw new UnauthorizedException('Invalid role');
+
       const payload: AuthJwtPayload = {
         sub: user._id.toString(),
         email: user.email,
         name: user.name,
-        role: user.role,
+        role: { _id: role._id, name: role.name },
       };
 
       const [accessToken, newRefreshToken] = await Promise.all([
@@ -120,6 +155,7 @@ export class AuthService {
       return {
         accessToken,
         user: payload,
+        permissions: role.permissions,
       };
     } catch (error) {
       throw new UnauthorizedException(

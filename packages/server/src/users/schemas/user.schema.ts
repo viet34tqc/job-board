@@ -2,11 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
 import { Role } from 'src/roles/role.schema';
 
-export enum UserRole {
-  USER = 'user',
-  ADMIN = 'admin',
-}
-
 export type UserDocument = HydratedDocument<User>;
 
 // @Schema decorator with timestamps: true automatically adds and manages
