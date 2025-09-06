@@ -86,7 +86,7 @@ export class UsersService {
     };
   }
 
-  async findOne(id: string): Promise<UserDocument> {
+  async findOne(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new NotFoundException(`Invalid ID ${id}`);
     const user = await this.userModel

@@ -3,14 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { verify } from 'argon2';
 import { Response } from 'express';
-import { Types } from 'mongoose';
 import { parseDuration } from 'src/core/libs/utils';
 import { RoleDocument } from 'src/roles/role.schema';
 import { RolesService } from 'src/roles/roles.service';
 import { RegisterUserDto } from 'src/users/dtos/register-user.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { UsersService } from 'src/users/users.service';
-import { AuthJwtPayload } from './auth.type';
+import { AuthJwtPayload, AuthUser } from './auth.type';
 import { LoginDTO } from './dto/login.dto';
 
 @Injectable()
@@ -46,13 +45,7 @@ export class AuthService {
     const role = (await this.roleService.findOne(
       user.role.toString(),
     )) as unknown as RoleDocument & {
-      permissions: {
-        _id: Types.ObjectId;
-        name: string;
-        apiPath: string;
-        method: string;
-        module: string;
-      };
+      permissions: AuthUser['permissions'];
     };
     if (!role) throw new UnauthorizedException('Invalid role');
 
@@ -113,13 +106,7 @@ export class AuthService {
       const role = (await this.roleService.findOne(
         user.role.toString(),
       )) as unknown as RoleDocument & {
-        permissions: {
-          _id: Types.ObjectId;
-          name: string;
-          apiPath: string;
-          method: string;
-          module: string;
-        };
+        permissions: AuthUser['permissions'];
       };
       if (!role) throw new UnauthorizedException('Invalid role');
 

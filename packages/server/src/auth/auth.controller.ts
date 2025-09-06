@@ -4,6 +4,7 @@ import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor
 import { RegisterUserDto } from 'src/users/dtos/register-user.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { AuthService } from './auth.service';
+import { AuthUser } from './auth.type';
 import { IsPublic, UserDecorator } from './decoratots/auth.decorator';
 import { LoginDTO } from './dto/login.dto';
 
@@ -28,13 +29,8 @@ export class AuthController {
 
   @Get('me')
   @ResponseMessage('Get user profile successfully')
-  getProfile(@UserDecorator() user: UserDocument) {
-    return {
-      _id: user._id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-    };
+  getProfile(@UserDecorator() user: AuthUser) {
+    return user;
   }
 
   @Get('refresh-token')
