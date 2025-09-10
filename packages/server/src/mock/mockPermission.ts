@@ -136,4 +136,41 @@ export const mockPermissions = [
     module: 'RESUMES',
     isDeleted: false,
   },
+
+  // Subscriber-related permissions
+  {
+    name: 'View Subscribers',
+    apiPath: '/api/v1/subscribers',
+    method: PERMISSION_METHOD.GET,
+    module: 'SUBSCRIBERS',
+    isDeleted: false,
+  },
+  {
+    name: 'Create Subscriber',
+    apiPath: '/api/v1/subscribers',
+    method: PERMISSION_METHOD.POST,
+    module: 'SUBSCRIBERS',
+    isDeleted: false,
+  },
+  {
+    name: 'View Subscriber',
+    apiPath: '/api/v1/subscribers/:id',
+    method: PERMISSION_METHOD.GET,
+    module: 'SUBSCRIBERS',
+    isDeleted: false,
+  },
+  {
+    name: 'Update Subscriber',
+    apiPath: '/api/v1/subscribers/:id',
+    method: PERMISSION_METHOD.PATCH,
+    module: 'SUBSCRIBERS',
+    isDeleted: false,
+  },
+  {
+    name: 'Delete Subscriber',
+    apiPath: '/api/v1/subscribers/:id',
+    method: PERMISSION_METHOD.DELETE,
+    module: 'SUBSCRIBERS',
+    isDeleted: false,
+  },
 ];

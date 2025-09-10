@@ -47,6 +47,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         permission.apiPath === apiPath && permission.method === method,
     );
 
+    // Allow access to /auth/me
+    if (apiPath.includes('/auth/')) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return user;
+    }
+
     if (!userHasPermission) {
       throw new ForbiddenException('Insufficient permissions');
     }

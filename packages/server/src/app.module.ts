@@ -13,11 +13,12 @@ import configuration from './core/config/configuration';
 import { validate } from './core/config/env.validation';
 import { FilesModule } from './files/files.module';
 import { JobsModule } from './jobs/jobs.module';
-import { UsersModule } from './users/users.module';
-import { ResumesModule } from './resumes/resumes.module';
-import { PermissionsModule } from './permissions/permissions.module';
-import { RolesModule } from './roles/roles.module';
 import { MockModule } from './mock/mock.module';
+import { PermissionsModule } from './permissions/permissions.module';
+import { ResumesModule } from './resumes/resumes.module';
+import { RolesModule } from './roles/roles.module';
+import { SubscribersModule } from './subscribers/subscribers.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { MockModule } from './mock/mock.module';
     PermissionsModule,
     RolesModule,
     MockModule,
+    SubscribersModule,
   ],
   controllers: [AppController],
   providers: [

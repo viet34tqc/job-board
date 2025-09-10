@@ -47,7 +47,7 @@ Other entities:
 
 ### 1. **Candidate**
 
-- Register and log in (jwt authentication).
+- Register and log in.
 - Search for jobs by skills.
 - View job postings.
 - Submit CVs to job postings.
@@ -59,10 +59,10 @@ Other entities:
 - Post new job postings.
 - Manage job postings.
 - Add company profile and introduction.
+- Review and approve submitted CVs before they are forwarded to employers.
 
 ### 3. **Admin**
 
-- Review and approve submitted CVs before they are forwarded to employers.
 - Manage users, job postings, and system settings.
 
 ## Skill-Based Subscription System
