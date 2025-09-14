@@ -10,5 +10,7 @@ export default () => ({
   jwtRefreshSecret:
     process.env.JWT_REFRESH_SECRET ?? 'your-jwt-secret-key-here',
   jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN ?? '1h',
-  jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN ?? '10d',
+  emailHost: process.env.EMAIL_HOST ?? 'smtp.example.com',
+  smtpUser: process.env.SMTP_USER ?? 'your-smtp-user',
+  smtpPassword: process.env.SMTP_PASSWORD ?? 'your-smtp-password',
 });

@@ -13,6 +13,7 @@ import configuration from './core/config/configuration';
 import { validate } from './core/config/env.validation';
 import { FilesModule } from './files/files.module';
 import { JobsModule } from './jobs/jobs.module';
+import { MailModule } from './mail/mail.module';
 import { MockModule } from './mock/mock.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { ResumesModule } from './resumes/resumes.module';
@@ -49,6 +50,7 @@ import { UsersModule } from './users/users.module';
     RolesModule,
     MockModule,
     SubscribersModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [
