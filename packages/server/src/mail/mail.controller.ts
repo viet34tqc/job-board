@@ -1,36 +1,53 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Controller, Get } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IsPublic } from 'src/auth/decoratots/auth.decorator';
+import { Job, JobDocument } from 'src/jobs/jobs.schema';
+import {
+  Subscriber,
+  SubscriberDocument,
+} from 'src/subscribers/schemas/subscriber.schema';
 
 @Controller('mail')
 export class MailController {
-  constructor(private readonly mailService: MailerService) {}
+  constructor(
+    private readonly mailService: MailerService,
+
+    @InjectModel(Subscriber.name)
+    private readonly subscriberModel: SoftDeleteModel<SubscriberDocument>,
+    @InjectModel(Job.name)
+    private readonly jobModel: SoftDeleteModel<JobDocument>,
+  ) {}
 
   @Get()
   @IsPublic()
   async handleTestMail() {
-    await this.mailService.sendMail({
-      to: 'viet34tqc@gmail.com',
-      from: '"Viet Nguyen" <viet34tqc@gmail.com>',
-      subject: 'test mail',
-      template: 'jobs',
-      context: {
-        subject: 'New Job Opportunities', // This will be available as {{subject}} in the template
-        jobs: [
-          {
-            title: 'Senior Software Engineer', // This will be available as {{this.title}} in the template
-            company: 'Tech Corp',
-            type: 'Full-time',
-            location: 'Remote',
-            salary: '$80,000 - $100,000',
-            description:
-              'We are looking for an experienced software engineer...',
-            applyUrl: 'https://example.com/apply/123',
-          },
-        ],
-        currentYear: new Date().getFullYear(),
-        companyName: 'Your Company',
-      },
-    });
+    const subscribers = await this.subscriberModel.find({}).exec();
+    for (const subscriber of subscribers) {
+      const subSkills = subscriber.skills;
+      const jobMatchingSkills = await this.jobModel
+        .find({ skills: { $in: subSkills } })
+        .exec();
+      const jobList = jobMatchingSkills.map((job) => ({
+        name: job.name,
+        company: job.company.name,
+        skills: job.skills,
+        salary: job.salary,
+      }));
+      await this.mailService.sendMail({
+        to: 'viet34tqc@gmail.com',
+        from: '"Viet Nguyen" <viet34tqc@gmail.com>',
+        subject: 'test mail',
+        template: 'jobs',
+        context: {
+          subject: 'New Job Opportunities', // This will be available as {{subject}} in the template
+          jobList: jobList,
+          unsubscribeUrl: 'https://example.com/unsubscribe',
+          currentYear: new Date().getFullYear(),
+          companyName: 'Your Company',
+        },
+      });
+    }
   }
 }

@@ -11,6 +11,19 @@
         margin: 0;
         padding: 0;
       }
+      .skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+      .skill-tag {
+        background-color: #e0f2fe;
+        color: #0369a1;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
       .container {
         max-width: 600px;
         margin: 0 auto;
@@ -94,48 +107,18 @@
       </div>
 
       <div class='content'>
-        {{#each jobs}}
+        {{#each jobList}}
           <div class='job-card'>
-            <h2 class='job-title'>{{this.title}}</h2>
+            <h2 class='job-title'>{{this.name}}</h2>
             <p class='company'>{{this.company}}</p>
+            <div class='skills'>
+              <strong>Skills:</strong>
+              {{#each this.skills}}
+                <span class='skill-tag'>{{this}}</span>
+              {{/each}}
+            </div>
 
             <div class='job-meta'>
-              <span class='meta-item'>
-                <svg
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z'
-                    fill='#4B5563'
-                  />
-                  <path
-                    d='M12 6C11.45 6 11 6.45 11 7V12.16C11 12.61 11.22 13.05 11.59 13.3L15.23 15.77C15.62 16.04 16.15 15.96 16.44 15.58C16.72 15.2 16.63 14.66 16.24 14.37L13 12.09V7C13 6.45 12.55 6 12 6Z'
-                    fill='#4B5563'
-                  />
-                </svg>
-                {{this.type}}
-              </span>
-              <span class='meta-item'>
-                <svg
-                  width='16'
-                  height='16'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z'
-                    fill='#4B5563'
-                  />
-                </svg>
-                {{this.location}}
-              </span>
-              {{#if this.salary}}
-                <span class='meta-item'>
                   <svg
                     width='16'
                     height='16'
@@ -152,23 +135,16 @@
                       fill='#4B5563'
                     />
                   </svg>
-                  {{this.salary}}
-                </span>
-              {{/if}}
             </div>
 
             <div class='job-description'>
-              {{#if this.description}}
-                {{this.description}}
-              {{else}}
-                <p>We are looking for a talented
-                  {{this.title}}
-                  to join our team at
-                  {{this.company}}.</p>
-              {{/if}}
+              <p>We are looking for a talented
+                {{this.name}}
+                to join our team at
+                {{this.company}}.</p>
             </div>
 
-            <a href='{{this.applyUrl}}' class='apply-btn'>Apply Now</a>
+            <a href='#' class='apply-btn'>View Details</a>
           </div>
         {{/each}}
 

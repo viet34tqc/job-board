@@ -2,9 +2,12 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { validate } from 'class-validator';
 import { join } from 'path';
 import configuration from 'src/core/config/configuration';
+import { JobSchema } from 'src/jobs/jobs.schema';
+import { SubscriberSchema } from 'src/subscribers/schemas/subscriber.schema';
 import { MailController } from './mail.controller';
 import { MailService } from './mail.service';
 
@@ -16,28 +19,29 @@ import { MailService } from './mail.service';
       validate,
       load: [configuration],
     }),
+    MongooseModule.forFeature([
+      { name: 'Subscriber', schema: SubscriberSchema },
+      { name: 'Job', schema: JobSchema },
+    ]),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => {
-        console.log('configService', configService.get<string>('smtpUser'));
-        return {
-          transport: {
-            host: configService.get<string>('emailHost'),
-            secure: false,
-            auth: {
-              user: configService.get<string>('smtpUser'),
-              pass: configService.get<string>('smtpPassword'),
-            },
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: configService.get<string>('emailHost'),
+          secure: false,
+          auth: {
+            user: configService.get<string>('smtpUser'),
+            pass: configService.get<string>('smtpPassword'),
           },
-          template: {
-            dir: join(__dirname, 'templates'),
-            adapter: new HandlebarsAdapter(),
-            options: {
-              strict: true,
-            },
+        },
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
           },
-        };
-      },
+        },
+      }),
       inject: [ConfigService],
     }),
   ],
