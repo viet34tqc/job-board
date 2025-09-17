@@ -80,10 +80,14 @@ export class SubscribersService {
     });
     if (isExists) throw new BadRequestException('Subscriber already exists');
 
-    return this.subscriberModel.findByIdAndUpdate(id, {
-      ...updateSubscriberDto,
-      updatedBy: { _id: user._id, email: user.email },
-    });
+    return this.subscriberModel.updateOne(
+      { user: user.email },
+      {
+        ...updateSubscriberDto,
+        updatedBy: { _id: user._id, email: user.email },
+      },
+      { upsert: true, new: true },
+    );
   }
 
   async remove(id: string, user: UserDocument) {

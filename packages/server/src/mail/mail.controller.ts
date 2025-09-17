@@ -1,6 +1,7 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Controller, Get } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Cron } from '@nestjs/schedule';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IsPublic } from 'src/auth/decoratots/auth.decorator';
 import { Job, JobDocument } from 'src/jobs/jobs.schema';
@@ -22,6 +23,7 @@ export class MailController {
 
   @Get()
   @IsPublic()
+  @Cron('0 0 0 * * 0') // run at 0h0' every sunday
   async handleTestMail() {
     const subscribers = await this.subscriberModel.find({}).exec();
     for (const subscriber of subscribers) {
