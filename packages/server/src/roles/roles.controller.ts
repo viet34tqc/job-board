@@ -8,15 +8,16 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { CreateRoleDto } from './dtos/create-role.dto';
 import { UpdateRoleDto } from './dtos/update-role.dto';
 import { RolesService } from './roles.service';
-import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Roles')
+@ApiBearerAuth('token')
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}

@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -17,6 +17,7 @@ import { UserDocument } from './schemas/user.schema';
 import { UsersService } from './users.service';
 
 @ApiTags('Users')
+@ApiBearerAuth('token')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -35,8 +36,8 @@ export class UsersController {
   }
 
   // Public for displaying all the clients on homepage
-  @IsPublic()
   @Get(':id')
+  @IsPublic()
   async findOne(@Param('id') id: string): Promise<UserDocument> {
     return await this.usersService.findOne(id);
   }

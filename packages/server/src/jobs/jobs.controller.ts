@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { IsPublic, UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor';
@@ -19,6 +19,7 @@ import { JobDocument } from './jobs.schema';
 import { JobsService } from './jobs.service';
 
 @ApiTags('Jobs')
+@ApiBearerAuth('token')
 @Controller('jobs')
 export class JobsController {
   constructor(private jobsService: JobsService) {}
@@ -31,15 +32,15 @@ export class JobsController {
     return this.jobsService.create(createJobDto, user);
   }
 
-  @IsPublic()
   @Get()
+  @IsPublic()
   @ResponseMessage('Get all jobs successfully')
   findAll(@Query() query: PaginationDto) {
     return this.jobsService.findAll(query);
   }
 
-  @IsPublic()
   @Get(':id')
+  @IsPublic()
   findOne(@Param('id') id: string) {
     return this.jobsService.findOne(id);
   }
