@@ -8,6 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
@@ -16,6 +17,7 @@ import { UpdatePermissionDto } from './dtos/update-permission.dto';
 import { Permission } from './permission.schema';
 import { PermissionsService } from './permissions.service';
 
+@ApiTags('Permissions')
 @Controller('permissions')
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}

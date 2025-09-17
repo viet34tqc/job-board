@@ -2,6 +2,7 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Controller, Get } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
+import { ApiTags } from '@nestjs/swagger';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IsPublic } from 'src/auth/decoratots/auth.decorator';
 import { Job, JobDocument } from 'src/jobs/jobs.schema';
@@ -10,6 +11,7 @@ import {
   SubscriberDocument,
 } from 'src/subscribers/schemas/subscriber.schema';
 
+@ApiTags('Mail')
 @Controller('mail')
 export class MailController {
   constructor(

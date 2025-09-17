@@ -9,6 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { ResponseMessage } from 'src/core/interceptors/transformData.interceptor';
@@ -16,6 +17,7 @@ import { UserDocument } from 'src/users/schemas/user.schema';
 import { CreateResumeDto } from './dtos/create-resume.dto';
 import { ResumesService } from './resumes.service';
 
+@ApiTags('Resumes')
 @Controller('resumes')
 export class ResumesController {
   constructor(private readonly resumesService: ResumesService) {}

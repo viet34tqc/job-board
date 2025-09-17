@@ -1,6 +1,7 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { TransformDataInterceptor } from './core/interceptors/transformData.interceptor';
@@ -28,6 +29,28 @@ async function bootstrap() {
   );
   app.use(cookieParser());
   app.useGlobalInterceptors(new TransformDataInterceptor(app.get(Reflector)));
+
+  const config = new DocumentBuilder()
+    .setTitle('Job Board API')
+    .setDescription('The job board API description')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'Bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+      },
+      'token',
+    )
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory, {
+    swaggerOptions: {
+      // Keep the token in localStorage
+      persistAuthorization: true,
+    },
+  });
   await app.listen(configService.get<number>('backendPort')!);
 }
 void bootstrap();

@@ -5,8 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Connection } from 'mongoose';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { CompaniesModule } from './companies/companies.module';
@@ -54,9 +52,7 @@ import { UsersModule } from './users/users.module';
     SubscribersModule,
     MailModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     // We are applying global authentication guard
     {
       provide: APP_GUARD,

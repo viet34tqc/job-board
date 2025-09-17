@@ -8,6 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UserDecorator } from 'src/auth/decoratots/auth.decorator';
 import { PaginationDto } from 'src/core/dtos/pagination.dto';
 import { UserDocument } from 'src/users/schemas/user.schema';
@@ -15,6 +16,7 @@ import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { UpdateSubscriberDto } from './dto/update-subscriber.dto';
 import { SubscribersService } from './subscribers.service';
 
+@ApiTags('Subscribers')
 @Controller('subscribers')
 export class SubscribersController {
   constructor(private readonly subscribersService: SubscribersService) {}
