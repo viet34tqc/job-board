@@ -14,4 +14,9 @@ export default () => ({
   emailHost: process.env.EMAIL_HOST ?? 'smtp.example.com',
   smtpUser: process.env.SMTP_USER ?? 'your-smtp-user',
   smtpPassword: process.env.SMTP_PASSWORD ?? 'your-smtp-password',
+  awsRegion: process.env.AWS_REGION ?? 'your-s3-region',
+  awsBucketName: process.env.AWS_BUCKET_NAME ?? 'your-s3-bucket-name',
+  awsAccessKey: process.env.AWS_ACCESS_KEY ?? 'your-s3-access-key',
+  awsSecretAccessKey:
+    process.env.AWS_SECRET_ACCESS_KEY ?? 'your-s3-secret-access-key',
 });

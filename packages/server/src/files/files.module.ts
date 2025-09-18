@@ -5,6 +5,7 @@ import { diskStorage } from 'multer';
 import * as path from 'path';
 import { FilesController } from './files.controller';
 import { FilesService } from './files.service';
+import { S3Service } from './s3.service';
 import { UploadRequest } from './types';
 
 const uploadDir = path.join(process.cwd(), 'uploads');
@@ -54,7 +55,7 @@ function ensureUploadDir(uploadPath: string) {
     }),
   ],
   controllers: [FilesController],
-  providers: [FilesService],
+  providers: [FilesService, S3Service],
   exports: [FilesService],
 })
 export class FilesModule {}

@@ -50,7 +50,7 @@ Other entities:
 - Register and log in.
 - Search for jobs by skills.
 - View job postings.
-- Submit CVs to job postings.
+- Submit CVs to job postings (via S3 or saved in disk).
 - Subscribe to specific skills to receive weekly job updates via email.
 
 ### 2. **Employer**

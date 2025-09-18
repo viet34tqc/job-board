@@ -13,11 +13,15 @@ import { Response } from 'express';
 import { IsPublic } from 'src/auth/decoratots/auth.decorator';
 import { ServeFileDto } from './dtos/serve-file.dto';
 import { FilesService } from './files.service';
+import { S3Service } from './s3.service';
 import { UploadRequest } from './types';
 
 @Controller('files')
 export class FilesController {
-  constructor(private filesService: FilesService) {}
+  constructor(
+    private filesService: FilesService,
+    private s3Service: S3Service,
+  ) {}
 
   @IsPublic()
   @Post('serve')
@@ -41,5 +45,17 @@ export class FilesController {
     @Req() req: UploadRequest,
   ) {
     return this.filesService.buildFilesResponse(files, req.headers?.folder);
+  }
+
+  @Post('upload-url')
+  async getUploadUrl(
+    @Body() body: { filename: string; mimetype: string; size: number },
+  ) {
+    return this.s3Service.getUploadUrl(body.filename, body.mimetype, body.size);
+  }
+
+  @Post('download-url')
+  async getDownloadUrl(@Body() body: { key: string }) {
+    return this.s3Service.getDownloadUrl(body.key);
   }
 }
